@@ -157,23 +157,9 @@ print("gradients[\"dby\"][1] =", gradients["dby"][1])
 Now assume that the model is trained. I would like to generate new text (characters). The process of generation is explained in the picture below:
 
 <img src="images/dinos3.png" style="width:500;height:300px;">
-<caption><center> **Figure 3**: In this picture, we assume the model is already trained. We pass in $x^{\langle 1\rangle} = \vec{0}$ at the first time step, and have the network then sample one character at a time. </center></caption>
+<caption><center> **Figure 3**: In this picture, we assume the model is already trained. We pass in x(1) = 0 at the first time step, and have the network then sample one character at a time. </center></caption>
 
-Below, I am Implementing the `sample` function below to sample characters. I need to carry out 4 steps:
-
-- **Step 1**: Pass the network the first "dummy" input $x^{\langle 1 \rangle} = \vec{0}$ (the vector of zeros). This is the default input before we've generated any characters. We also set $a^{\langle 0 \rangle} = \vec{0}$
-
-- **Step 2**: Run one step of forward propagation to get $a^{\langle 1 \rangle}$ and $\hat{y}^{\langle 1 \rangle}$. Here are the equations:
-
-$$ a^{\langle t+1 \rangle} = \tanh(W_{ax}  x^{\langle t \rangle } + W_{aa} a^{\langle t \rangle } + b)\tag{1}$$
-
-$$ z^{\langle t + 1 \rangle } = W_{ya}  a^{\langle t + 1 \rangle } + b_y \tag{2}$$
-
-$$ \hat{y}^{\langle t+1 \rangle } = softmax(z^{\langle t + 1 \rangle })\tag{3}$$
-
-Note that $\hat{y}^{\langle t+1 \rangle }$ is a (softmax) probability vector (its entries are between 0 and 1 and sum to 1). $\hat{y}^{\langle t+1 \rangle}_i$ represents the probability that the character indexed by "i" is the next character.  I have provided a `softmax()` function that I can use.
-
-- **Step 3**: Carry out sampling: Pick the next character's index according to the probability distribution specified by $\hat{y}^{\langle t+1 \rangle }$. This means that if $\hat{y}^{\langle t+1 \rangle }_i = 0.16$, I will pick the index "i" with 16% probability. To implement it, I am using [`np.random.choice`](https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.random.choice.html).
+<img width="638" alt="Screen Shot 2021-10-24 at 12 50 34 am" src="https://user-images.githubusercontent.com/56792400/138559339-b9660bf9-8f4d-4328-b188-1e295f0f2488.png">
 
 Here is an example of how to use `np.random.choice()`:
 ```python
@@ -181,11 +167,8 @@ np.random.seed(0)
 p = np.array([0.1, 0.0, 0.7, 0.2])
 index = np.random.choice([0, 1, 2, 3], p = p.ravel())
 ```
-This means that I will pick the `index` according to the distribution: 
-$P(index = 0) = 0.1, P(index = 1) = 0.0, P(index = 2) = 0.7, P(index = 3) = 0.2$.
 
-- **Step 4**: The last step to implement in `sample()` is to overwrite the variable `x`, which currently stores $x^{\langle t \rangle }$, with the value of $x^{\langle t + 1 \rangle }$. I will represent $x^{\langle t + 1 \rangle }$ by creating a one-hot vector corresponding to the character I've chosen as my prediction. I will then forward propagate $x^{\langle t + 1 \rangle }$ in Step 1 and keep repeating the process until I get a "\n" character, indicating I've reached the end of the dinosaur name. 
-
+<img width="595" alt="Screen Shot 2021-10-24 at 12 54 46 am" src="https://user-images.githubusercontent.com/56792400/138559420-95744f54-a154-4fa3-b874-4537a431eae8.png">
 
 ```python
 # GRADED FUNCTION: sample
