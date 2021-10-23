@@ -76,7 +76,9 @@ The model will have the following structure:
 <img src="images/rnn.png" style="width:450;height:300px;">
 <caption><center> **Figure 1**: Recurrent Neural Network.  </center></caption>
 
-At each time-step, the RNN tries to predict what is the next character given the previous characters. The dataset $X = (x^{\langle 1 \rangle}, x^{\langle 2 \rangle}, ..., x^{\langle T_x \rangle})$ is a list of characters in the training set, while $Y = (y^{\langle 1 \rangle}, y^{\langle 2 \rangle}, ..., y^{\langle T_x \rangle})$ is such that at every time-step $t$, we have $y^{\langle t \rangle} = x^{\langle t+1 \rangle}$. 
+<img width="626" alt="Screen Shot 2021-10-24 at 12 47 12 am" src="https://user-images.githubusercontent.com/56792400/138559213-cd97aae2-f84f-41eb-bbd8-02d3ea195dae.png">
+
+ 
 
 ## 2 - Building blocks of the model
 
